@@ -1,0 +1,50 @@
+.react-calendar {
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.react-calendar:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus{
+    transform: scale(1.1);
+    transition: 0.1s transform;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    background: #64b2f7;
+    color: #fff;
+}
+.react-calendar__tile--active {
+    background: #64b2f7;
+    color: white;
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus{
+    background: #64b2f7;
+}
+.mymodal .MuiGrid-root.myicons {
+    padding-top: 28px;
+}
+
+.mymodal button.myaddbutton {
+    background: #64b2f7;
+    border: none;
+    color: #fff;
+}
+
+.mymodal button.myaddbutton:hover {
+    background: #64b2f7;
+    border: none;
+    transform: scale(1.05);
+    transition: 0.1s transform ease-out;
+}
+
+div#myeventlist .mytableContainer thead th {
+    background: #64b2f7;
+    color: #fff !important;
+    box-shadow: 2px 0 15px 2px rgba(0,0,0,0.2);
+}
