@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Main from './Components/Main'
 import Listing from './Components/Listing'
 import EditEvent from './Components/EditEvent'
+import ClientListing from './Components/ClientListing'
 import './App.css';
 import './Assets/styles.css'
 import axios from 'axios'
@@ -9,7 +10,7 @@ import axios from 'axios'
 class App extends Component {
 
     state = {
-        step: 0,
+        step: 3,
         eventId: 'event' + Math.random().toString(36).substring(7),
         tenantId: 'reesby',
         date: new Date(),
@@ -119,7 +120,13 @@ class App extends Component {
     add = () => {
         this.setState({
             step: 1
-        })
+        });
+    }
+
+    clientListing = () => {
+        this.setState({
+            step: 3
+        });
     }
 
     edit = event => e => {
@@ -153,9 +160,10 @@ class App extends Component {
                 case 0:
                     return (
                         <Listing
-                        nextStep={this.add}
-                        listStep={this.list}
-                        editStep={this.edit}
+                        nextStep = {this.add}
+                        listStep = {this.list}
+                        editStep = {this.edit}
+                        clientList = {this.clientListing}
                         />
                     )
                 case 1:
@@ -180,6 +188,12 @@ class App extends Component {
                         value = {values}
                         event={event}
                         updated={updated}
+                        />
+                    )
+                case 3:
+                    return (
+                        <ClientListing
+                        
                         />
                     )
                 default:

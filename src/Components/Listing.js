@@ -37,7 +37,13 @@ const styles = theme => ({
           '&:hover': {
             padding: '20px 5px',
             transition: '0.5s padding'
+          },
+          '&: button': {
+              background: 'red',
           }
+      },
+      btnCollect: {
+          margin: "10px 0"
       }
   });
 
@@ -110,7 +116,7 @@ class Listing extends Component{
 
         const { displayData } = this.state;
 
-        const { nextStep, classes, listStep, editStep } = this.props
+        const { nextStep, classes, listStep, editStep, clientList } = this.props
 
         return(
             <Container maxWidth="md" style={ { marginTop: 80 } }>
@@ -137,7 +143,10 @@ class Listing extends Component{
                 </Paper>
 
 
-                <Button onClick={nextStep}>Add Events</Button>
+                <div className={classes.btnCollect}>
+                    <Button onClick={nextStep}>Add Events</Button>
+                    <Button onClick={clientList}>Client Listing</Button>
+                </div>
                 
                 <div id="myeventlist">
                     <Row values={displayData} listStep={listStep} editStep={editStep} />
