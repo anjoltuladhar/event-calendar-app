@@ -4,6 +4,7 @@ import {
     Paper,
     IconButton,
     InputBase,
+    ButtonGroup,
     Button,
     TableContainer,
     TableHead,
@@ -12,7 +13,7 @@ import {
     TableBody,
     Checkbox
 } from '@material-ui/core'
-import { Search, Edit, ArrowBackIos, ArrowForwardIos } from '@material-ui/icons'
+import { Search, Edit, ArrowBackIos, ArrowForwardIos, Add, FilterList } from '@material-ui/icons'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/styles'
@@ -68,6 +69,15 @@ const styles = theme => ({
               fontSize: 15,
               fontWeight: 700
           }
+      },
+      topHeader: {
+        display: "flex",
+        justifyContent: "space-between"    
+      },
+      topButton: {
+        '& button': {
+            padding: 0
+        }
       }
 })
 
@@ -93,35 +103,37 @@ class ClientListing extends Component{
         axios.get('http://javareesbyapi-env.eba-rtdeyeqd.ap-southeast-2.elasticbeanstalk.com/api/v1/getallclients/tenant/reesby')
         .then((response) => {
         const clients = response.data
-        this.setState({clientList: clients, count: clients.length})
-        this.loadPageData();    
+        this.setState({clientList: clients, searchedList: clients, count: clients.length})
+        this.loadPageData();
         });
     }
 
     loadPageData = () => {
-        const { clientList } = this.state
+        const { searchedList } = this.state
         const newList = []
-        if(clientList.length < 10){
-            for (const index in clientList) {
-                newList[index] = clientList[index]
+        if(searchedList.length < 10){
+            for (const index in searchedList) {
+                newList[index] = searchedList[index]
             }
         }
         else{
             for (let index = 0; index < 10; index++) {
-                if(clientList[index] !== null){
-                    newList[index] = clientList[index];
+                if(searchedList[index] !== null){
+                    newList[index] = searchedList[index];
                 }
             }
         }
-        console.log(newList)
-
         this.setState({displayList: newList})
     }
 
-    search = () => {
+    search = type => {
         const { searchValue, clientList } = this.state
+        let sData = searchValue
+        if(type === "clear"){
+            sData = ""
+        }
         const searchList = clientList.filter((client) => 
-            ((client.clientName.toLowerCase().indexOf(searchValue.toLowerCase())) !== -1)
+            ((client.clientName.toLowerCase().indexOf(sData.toLowerCase())) !== -1)
         )
         let newList = []
         for (let index = 0; index < 10; index++) {
@@ -129,14 +141,15 @@ class ClientListing extends Component{
                 newList[index] = searchList[index];
             }
         }
-        this.setState({searchedList: searchList, displayList: newList})
+        this.setState({searchedList: searchList, displayList: newList, count: searchList.length})
     }
 
     clear = e => {
         e.preventDefault();
         var inputField = document.getElementById('search-key')
         inputField.value = ""
-        this.setState({searchValue: '', searchedList: []})
+        this.search("clear")
+        this.setState({searchValue: ''})
     }
 
     onSelectAllClick = e => {
@@ -198,13 +211,13 @@ class ClientListing extends Component{
 
     nextPage = e => {
         e.preventDefault();
-        const { clientList, pageNumber, count } = this.state
+        const { searchedList, pageNumber, count } = this.state
         const totalPages = Math.ceil(count/10);
         if(pageNumber < totalPages){
             const newList = []
             for (let index = (pageNumber*10); index < ((pageNumber+1)*10); index++) {
-                if(clientList[index]){
-                    newList[index] = clientList[index];
+                if(searchedList[index]){
+                    newList[index] = searchedList[index];
                 }
             }
             this.setState({pageNumber: (pageNumber + 1), displayList: newList})
@@ -213,13 +226,13 @@ class ClientListing extends Component{
 
     prevPage = e => {
         e.preventDefault();
-        const { clientList, pageNumber, count } = this.state
+        const { searchedList, pageNumber, count } = this.state
         const totalPages = Math.ceil(count/10);
         if(pageNumber < totalPages){
             const newList = []
             for (let index = ((pageNumber-2)*10); index < ((pageNumber - 1)*10); index++) {
-                if(clientList[index]){
-                    newList[index] = clientList[index];
+                if(searchedList[index]){
+                    newList[index] = searchedList[index];
                 }
             }
             this.setState({pageNumber: (pageNumber - 1), displayList: newList})
@@ -229,7 +242,7 @@ class ClientListing extends Component{
     handleValueChange = e => {
         if(e.target.value.length === 0){
             this.search()
-            this.setState({searchValue: '', searchedList: []})
+            this.setState({searchValue: ''})
         }
         this.setState({searchValue: e.target.value})
     }
@@ -243,7 +256,19 @@ class ClientListing extends Component{
 
         return (
             <Container maxWidth="lg" style={ { marginTop: 80, background: "#efefef", padding: "10px 15px", boxSizing: "content-box" } }>
-                <h2>Clients</h2>
+                <div className={classes.topHeader}>
+                    <h2>Clients</h2>
+                    <ButtonGroup orientation="vertical">
+                        <Button className={classes.topButton}>
+                                <Add />
+                            <span>New Client</span>
+                        </Button>
+                        <Button className={classes.topButton}>
+                                <FilterList />
+                            <span>Show Filter</span>
+                        </Button>
+                    </ButtonGroup>
+                </div>
                 <div style={{display: "inline-flex"}}>
                     <Paper component="div"
                     className={classes.root}
