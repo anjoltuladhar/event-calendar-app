@@ -73,10 +73,12 @@ const styles = theme => ({
       topHeader: {
         display: "flex",
         justifyContent: "space-between",
-        color: "#fff",
+        color: "#000",
+        
       },
       topButton: {
         margin: "10px 0",
+        color: '#fff',
         border: "none",
         '& button': {
             padding: 0,
