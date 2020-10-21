@@ -72,11 +72,14 @@ const styles = theme => ({
       },
       topHeader: {
         display: "flex",
-        justifyContent: "space-between"    
+        justifyContent: "space-between",
+        color: "#fff",
       },
       topButton: {
+        margin: "10px 0",
+        border: "none",
         '& button': {
-            padding: 0
+            padding: 0,
         }
       }
 })
@@ -259,11 +262,11 @@ class ClientListing extends Component{
                 <div className={classes.topHeader}>
                     <h2>Clients</h2>
                     <ButtonGroup orientation="vertical">
-                        <Button className={classes.topButton}>
+                        <Button className={classes.topButton} style={{background: "blue"}}>
                                 <Add />
                             <span>New Client</span>
                         </Button>
-                        <Button className={classes.topButton}>
+                        <Button className={classes.topButton} style={{background: "purple"}}>
                                 <FilterList />
                             <span>Show Filter</span>
                         </Button>
